@@ -6,7 +6,7 @@ $config = array (
   "tvshows_destdir" => "/home/rtorrent/downloads/tvshows-smb",  /* where de shows will be sort */
   "tvshows_ext" => array ("avi", "mkv", "mp4"),                 /* extensions concerning video only */
   "tvshows_regex" => array (                                    /* regex to match, FIFO */
-    "/^(.+)[ ._-][Ss]([0-9]+)[Ee]([0-9]+)[^\\/]*$/i",
+    "/^(.+)[ ._-][Ss]([0-9]+)[ ._-]?[Ee]([0-9]+)[^\\/]*$/i",
     "/^(.+)[ ._-][Ss]?([0-9]+)[Ee]?([0-9]{2,}+)[^\\/]*$/i"
   ),
   "tvshows_debug" => FALSE,
@@ -88,7 +88,7 @@ function scanDirectory($path, $action)
 $action = $argv[1];
 $filePath = $argv[2];
 
-if (strpos($filePath, "/tvshows/") == false)
+if (strpos($filePath, "/tvshows/") == false) // A bit too custom
 {
   putInLog("Not a TV Show");
   return;
