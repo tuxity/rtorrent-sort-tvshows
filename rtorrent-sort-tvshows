@@ -1,18 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-$config = array(
-    "tvshows.src" => "/home/rtorrent/downloads/files/tvshows",          /* the source directory, where you download your files */
-    "tvshows.dest" => "/home/rtorrent/downloads/sorted-tvshows",        /* the destination directory, where the shows will be sorted */
-    "tvshows.ext" => array( "avi", "mkv", "mp4" ),                      /* specify video files extensions */
-    "tvshows.regex" => array(                                           /* regex to match, FIFO */
-        "/^(.+)[ ._-][Ss]([0-9]+)[ ._-]?[Ee]([0-9]+)[^\\/]*$/i",
-        "/^(.+)[ ._-][Ss]?([0-9]+)[Ee]?([0-9]{2,}+)[^\\/]*$/i"
-    ),
-    "tvshows.debug" => FALSE,
-    "tvshows.log" => "/tmp/rtorrent-sort-tvshows.log",                  /* where de log file will be written */
-);
-
+require_once __DIR__ . "/rtorrent-sort-tvshows.conf"
 
 function putInLog($str)
 {
