@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-require_once __DIR__ . "/rtorrent-sort-tvshows.conf"
+require_once __DIR__ . "/rtorrent-sort-tvshows.conf";
 
 function putInLog($str)
 {
