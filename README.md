@@ -5,12 +5,13 @@ This script will create a directory structure for TV Shows to match the [directo
 1. Clone the repository (For example in /home/rtorrent)
 2. Edit .rtorrent.rc and add these lines at the end :
 
-        system.method.set_key = event.download.finished,rtorrent-sort-tvshows,"execute=/home/rtorrent/rtorrent-sort-tvshows,link_show,$d.get_base_path="
-        system.method.set_key = event.download.erased,rtorrent-sort-tvshows,"execute=/home/rtorrent/rtorrent-sort-tvshows,unlink_show,$d.get_base_path="
+        system.method.set_key = event.download.finished,rtorrent-sort-tvshows,"execute=/home/rtorrent/rtorrent-sort-tvshows.php,link_show,$d.get_base_path="
+        system.method.set_key = event.download.erased,rtorrent-sort-tvshows,"execute=/home/rtorrent/rtorrent-sort-tvshows.php,unlink_show,$d.get_base_path="
 
-3. Edit $config variable in rtorrent-sort-tvshow file to set correct paths
-4. Make the script executable :
+3. Copy torrent-sort-tvshow.conf.dist to torrent-sort-tvshow.conf
+4. Edit $config variable in rtorrent-sort-tvshow.conf file to set correct paths
+5. Make the script executable :
 
-        chmod +x rtorrent-sort-tvshow
+        chmod +x rtorrent-sort-tvshow.php
 
-5. Restart rtorrent
+6. Restart rtorrent
