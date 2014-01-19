@@ -77,7 +77,7 @@ function scanDirectory($path, $action)
 $action = $argv[1];
 $filePath = $argv[2];
 
-if (strpos($filePath, $config['tvshows.src']) == false)
+if (preg_match("#{$config['tvshows.src']}#", $filePath) != 1)
 {
   putInLog("This file isn't a TV Show or the show is in the wrong directory");
   return;
