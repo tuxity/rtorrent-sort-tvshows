@@ -1,15 +1,16 @@
-#!/usr/bin/php
+#!/usr/bin/env php
 <?php
 
-$config = array (
-  "tvshows_destdir" => "/home/rtorrent/downloads/tvshows-smb",  /* where de shows will be sort */
-  "tvshows_ext" => array ("avi", "mkv", "mp4"),                 /* extensions concerning video only */
-  "tvshows_regex" => array (                                    /* regex to match, FIFO */
-    "/^(.+)[ ._-][Ss]([0-9]+)[ ._-]?[Ee]([0-9]+)[^\\/]*$/i",
-    "/^(.+)[ ._-][Ss]?([0-9]+)[Ee]?([0-9]{2,}+)[^\\/]*$/i"
-  ),
-  "tvshows_debug" => FALSE,
-  "tvshows_log" => "/home/rtorrent/rtorrent-sort-tvshows.log",          /* where de log file will be written */
+$config = array(
+    "tvshows.src" => "/home/rtorrent/downloads/files/tvshows",          /* the source directory, where you download your files */
+    "tvshows.dest" => "/home/rtorrent/downloads/sorted-tvshows",        /* the destination directory, where the shows will be sorted */
+    "tvshows.ext" => array( "avi", "mkv", "mp4" ),                      /* specify video files extensions */
+    "tvshows.regex" => array(                                           /* regex to match, FIFO */
+        "/^(.+)[ ._-][Ss]([0-9]+)[ ._-]?[Ee]([0-9]+)[^\\/]*$/i",
+        "/^(.+)[ ._-][Ss]?([0-9]+)[Ee]?([0-9]{2,}+)[^\\/]*$/i"
+    ),
+    "tvshows.debug" => FALSE,
+    "tvshows.log" => "/tmp/rtorrent-sort-tvshows.log",                  /* where de log file will be written */
 );
 
 
@@ -17,8 +18,8 @@ function putInLog($str)
 {
     global $config;
 
-    if ($config['tvshows_debug'] === TRUE)
-        file_put_contents($config['tvshows_log'], date("Y-m-d H:i:s")." : ".$str."\n", FILE_APPEND);
+    if ($config['tvshows.debug'] === TRUE)
+        file_put_contents($config['tvshows.log'], date("Y-m-d H:i:s") . " : {$str}\n", FILE_APPEND);
 }
 
 function createSymlink($path, $action)
@@ -29,24 +30,24 @@ function createSymlink($path, $action)
     $file = $pathInfo['basename'];
     $ext = $pathInfo['extension'];
 
-    if (!isset($ext) || (isset($ext) && !in_array($ext, $config["tvshows_ext"])))
+    if (!isset($ext) || (isset($ext) && !in_array($ext, $config["tvshows.ext"])))
     {
         putInLog("No extension found or not an allowed extension");
         return;
     }
 
     $res = array();
-    foreach ($config['tvshows_regex'] as $regex) {
+    foreach ($config['tvshows.regex'] as $regex) {
         if (preg_match($regex, $file, $res))
             break;
         else
-            putInLog("Regex error on this name: {$file}");
+            putInLog("Regex error on this file: {$file}");
     }
 
     $name = ucwords(preg_replace("/[^a-zA-Z0-9]/", " ", $res[1]));
     $season = ($res[2][0] == 0) ? str_replace("0", "", $res[2]) : $res[2];
 
-    $symlinkDir = "{$config['tvshows_destdir']}/{$name}/Season {$season}";
+    $symlinkDir = "{$config['tvshows.dest']}/{$name}/Season {$season}";
 
     if ($action == "unlink_show")
     {
@@ -87,9 +88,9 @@ function scanDirectory($path, $action)
 $action = $argv[1];
 $filePath = $argv[2];
 
-if (strpos($filePath, "/tvshows/") == false) // A bit too custom
+if (strpos($filePath, $config['tvshows.src']) == false)
 {
-  putInLog("Not a TV Show");
+  putInLog("This file isn't a TV Show or the show is in the wrong directory");
   return;
 }
 
