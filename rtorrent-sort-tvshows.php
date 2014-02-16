@@ -41,7 +41,8 @@ function createSymlink($path, $action)
     if ($action == "unlink_show")
     {
         putInLog("Remove link {$symlinkDir}/{$file}");
-        unlink("{$symlinkDir}/{$file}");
+        if (file_exists("{$symlinkDir}/{$file}"))
+            unlink("{$symlinkDir}/{$file}");
     }
     else if ($action == "link_show")
     {
