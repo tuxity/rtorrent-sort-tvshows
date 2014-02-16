@@ -59,6 +59,8 @@ function createSymlink($path, $action)
             symlink($path, $symlinkFile);
         }
     }
+
+    echo "{$name}/Season {$season}/{$file}";
 }
 
 function scanDirectory($path, $action)
